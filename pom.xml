@@ -20,5 +20,13 @@
             <artifactId>hive-exec</artifactId>
             <version>2.3.7</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-streaming-java -->
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-streaming-java_2.12</artifactId>
+            <version>1.11.1</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 </project>
