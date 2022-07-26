@@ -1,4 +1,4 @@
-package flink;
+package flink.state;
 
 import org.apache.flink.api.common.functions.RichFlatMapFunction;
 import org.apache.flink.api.common.state.StateTtlConfig;
@@ -12,6 +12,7 @@ import org.apache.flink.runtime.state.memory.MemoryStateBackend;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.util.Collector;
 import org.apache.hadoop.conf.Configuration;
+
 import static org.apache.flink.runtime.state.memory.MemoryStateBackend.DEFAULT_MAX_STATE_SIZE;
 
 public class ValueStateDemo {
