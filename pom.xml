@@ -93,6 +93,19 @@
             <version>1.22.0</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>2.0.10</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-connector-kafka -->
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-connector-kafka_2.12</artifactId>
+            <version>1.11.1</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-table-planner -->
 <!--        <dependency>-->
 <!--            <groupId>org.apache.flink</groupId>-->
