@@ -29,6 +29,11 @@ import java.util.concurrent.TimeUnit;
  * 2. 通过异步IO查询维度数据
  * 3. 结合本地缓存如Guava Cache 减少对外部存储的访问。
  * 用Async I/O实现流表与维表Join
+ *
+ * ● 注意
+ * 1. 此方式不受限于内存，可支持数据量较大的维度数据。
+ * 2. 需要外部存储支持。
+ * 3. 应尽量减少对外部存储访问。
  */
 public class FlinkAsyncIO {
     public static void main(String[] args) throws Exception{
