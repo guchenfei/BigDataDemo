@@ -16,6 +16,18 @@ import java.util.Properties;
 
 /**
  * (3) Kafka Source的EventTime实例
+ * 数据
+ * {"cityId":1000,"cityName":"北京","ts":1L}
+ * {"cityId":2000,"cityName":"太原","ts":5L}
+ * {"cityId":3000,"cityName":"成都","ts":10L}
+ * {"cityId":4000,"cityName":"南京","ts":15L}
+ * {"cityId":6000,"cityName":"上海","ts":20L}
+ *
+ * {"cityId":1000,"ts":1L,"userName":"google1"}
+ * {"cityId":2000,"ts":5L,"userName":"google2"}
+ * {"cityId":3000,"ts":10L,"userName":"google3"}
+ * {"cityId":4000,"ts":15L,"userName":"google4"}
+ * {"cityId":6000,"ts":17L,"userName":"google5"}
  */
 public class JoinDemo8 {
     public static void main(String[] args) throws Exception {
