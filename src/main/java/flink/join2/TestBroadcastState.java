@@ -51,20 +51,16 @@ import java.util.Properties;
  */
 public class TestBroadcastState {
     public static void main(String[] args) throws Exception{
-
         //1、解析命令行参数
         ParameterTool fromArgs = ParameterTool.fromArgs(args);
         ParameterTool parameterTool = ParameterTool.fromPropertiesFile(fromArgs.getRequired("applicationProperties"));
-
         //checkpoint配置
         String checkpointDirectory = parameterTool.getRequired("checkpointDirectory");
         long checkpointSecondInterval = parameterTool.getLong("checkpointSecondInterval");
-
         //事件流配置
         String fromKafkaBootstrapServers = parameterTool.getRequired("fromKafka.bootstrap.servers");
         String fromKafkaGroupID = parameterTool.getRequired("fromKafka.group.id");
         String fromKafkaTopic = parameterTool.getRequired("fromKafka.topic");
-
         //配置流配置
         String fromMysqlHost = parameterTool.getRequired("fromMysql.host");
         int fromMysqlPort = parameterTool.getInt("fromMysql.port");
@@ -72,7 +68,6 @@ public class TestBroadcastState {
         String fromMysqlUser = parameterTool.getRequired("fromMysql.user");
         String fromMysqlPasswd = parameterTool.getRequired("fromMysql.passwd");
         int fromMysqlSecondInterval = parameterTool.getInt("fromMysql.secondInterval");
-
         //2、配置运行环境
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         //设置StateBackend
@@ -82,7 +77,6 @@ public class TestBroadcastState {
         checkpointConfig.setCheckpointInterval(checkpointSecondInterval * 1000);
         checkpointConfig.setCheckpointingMode(CheckpointingMode.EXACTLY_ONCE);
         checkpointConfig.enableExternalizedCheckpoints(CheckpointConfig.ExternalizedCheckpointCleanup.RETAIN_ON_CANCELLATION);
-
         //3、Kafka事件流
         //从Kafka中获取事件数据
         //数据：某个用户在某个时刻浏览或点击了某个商品,如
@@ -90,11 +84,9 @@ public class TestBroadcastState {
         Properties kafkaProperties = new Properties();
         kafkaProperties.put("bootstrap.servers",fromKafkaBootstrapServers);
         kafkaProperties.put("group.id",fromKafkaGroupID);
-
         FlinkKafkaConsumer<String> kafkaConsumer = new FlinkKafkaConsumer<>(fromKafkaTopic, new SimpleStringSchema(), kafkaProperties);
         kafkaConsumer.setStartFromLatest();
         DataStream<String> kafkaSource = env.addSource(kafkaConsumer).name("KafkaSource").uid("source-id-kafka-source");
-
         SingleOutputStreamOperator<Tuple4<String, String, String, Integer>> eventStream = kafkaSource.process(new ProcessFunction<String, Tuple4<String, String, String, Integer>>() {
             @Override
             public void processElement(String value, Context ctx, Collector<Tuple4<String, String, String, Integer>> out){
@@ -110,36 +102,28 @@ public class TestBroadcastState {
                 }
             }
         });
-
         //4、Mysql配置流
         //自定义Mysql Source，周期性地从Mysql中获取配置，并广播出去
         //数据: 用户ID,用户姓名，用户年龄
         DataStreamSource<HashMap<String, Tuple2<String, Integer>>> configStream = env.addSource(new MysqlSource(fromMysqlHost, fromMysqlPort, fromMysqlDB, fromMysqlUser, fromMysqlPasswd, fromMysqlSecondInterval));
-
         /*
         (1) 先建立MapStateDescriptor
         MapStateDescriptor定义了状态的名称、Key和Value的类型。
         这里，MapStateDescriptor中，key是Void类型，value是Map<String, Tuple2<String,Int>>类型。
         */
         MapStateDescriptor<Void, Map<String, Tuple2<String,Integer>>> configDescriptor = new MapStateDescriptor<>("config", Types.VOID, Types.MAP(Types.STRING, Types.TUPLE(Types.STRING, Types.INT)));
-
         /*
         (2) 将配置流广播，形成BroadcastStream
         */
         BroadcastStream<HashMap<String, Tuple2<String, Integer>>> broadcastConfigStream = configStream.broadcast(configDescriptor);
-
         //5、事件流和广播的配置流连接，形成BroadcastConnectedStream
         BroadcastConnectedStream<Tuple4<String, String, String, Integer>, HashMap<String, Tuple2<String, Integer>>> connectedStream = eventStream.connect(broadcastConfigStream);
-
         //6、对BroadcastConnectedStream应用process方法，根据配置(规则)处理事件
         SingleOutputStreamOperator<Tuple6<String, String, String, Integer, String, Integer>> resultStream = connectedStream.process(new CustomBroadcastProcessFunction());
-
         //7、输出结果
         resultStream.print();
-
         //8、生成JobGraph，并开始执行
         env.execute();
-
     }
 
     /**
