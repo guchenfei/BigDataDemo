@@ -43,6 +43,11 @@ import java.util.Properties;
  * 4.  事实流S2和广播流B1连接，形成连接后的流BroadcastConnectedStream BC。
  * 5.  基于BC流，在KeyedBroadcastProcessFunction/BroadcastProcessFunction中实现Join的逻辑处理。
  *   基于Broadcast State 动态更新配置以实现实时过滤数据并增加字段
+ *
+ *   ● 注意
+ * 1. 需要将维度数据的变化转换成广播流。
+ * 2. 维度的变化可实时感知(设定时间间隔去拉去数据)。
+ * 3. 维度数据保存在内存中，支持的数据量相对较小(state中存储)。
  */
 public class TestBroadcastState {
     public static void main(String[] args) throws Exception{
