@@ -49,7 +49,7 @@ public class UDTFRedis extends TableFunction<Row> {
             Row row = new Row(2);
             row.setField(0, valueSplit[0]);
             row.setField(1, Integer.valueOf(valueSplit[1]));
-            collector.collect(row);
+//            collector.collect(row);
         }
     }
 
