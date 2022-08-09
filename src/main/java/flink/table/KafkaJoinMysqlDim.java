@@ -72,8 +72,8 @@ public class KafkaJoinMysqlDim {
                 + "  LEFT JOIN dim_mysql FOR SYSTEM_TIME AS OF kafka.proctime AS mysql "
                 + "  ON kafka.userID = mysql.userID";
         Table table = tableEnv.sqlQuery(execSQL);
+        //把表中的数据一条一条的打印出来
         tableEnv.toAppendStream(table, Row.class).print();
-
         tableEnv.execute(KafkaJoinMysqlDim.class.getSimpleName());
 
     }
