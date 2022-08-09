@@ -1,25 +1,17 @@
 package flink.table;
 
 import com.alibaba.fastjson.JSON;
-import com.bigdata.flink.beans.table.UserBrowseLog;
 import flink.join2.UserBrowseLog;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.flink.addons.hbase.HBaseTableSource;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
-import org.apache.flink.api.java.io.jdbc.JDBCLookupOptions;
-import org.apache.flink.api.java.io.jdbc.JDBCOptions;
-import org.apache.flink.api.java.io.jdbc.JDBCTableSource;
 import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.ProcessFunction;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
-import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer010;
 import org.apache.flink.table.api.DataTypes;
 import org.apache.flink.table.api.EnvironmentSettings;
 import org.apache.flink.table.api.TableSchema;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
-import org.apache.flink.table.api.java.StreamTableEnvironment;
 import org.apache.flink.table.types.DataType;
 import org.apache.flink.types.Row;
 import org.apache.flink.util.Collector;
@@ -31,12 +23,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 
 /**
- *  Lookup Table Source
+ * Lookup Table Source
  */
 public class Test2 {
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
 
-        args=new String[]{"--application","flink/src/main/java/com/bigdata/flink/tableSqlLookableTableSource/application.properties"};
+        args = new String[]{"--application", "flink/src/main/java/com/bigdata/flink/tableSqlLookableTableSource/application.properties"};
 
         //1、解析命令行参数
         ParameterTool fromArgs = ParameterTool.fromArgs(args);
@@ -65,52 +57,52 @@ public class Test2 {
         //自己造的测试数据,某个用户在某个时刻点击了某个商品，以及商品的价值，如下
         //{"userID": "user_1", "eventTime": "2016-01-01 10:02:00", "eventType": "browse", "productID": "product_1", "productPrice": 20}
         Properties browseProperties = new Properties();
-        browseProperties.put("bootstrap.servers",kafkaBootstrapServers);
-        browseProperties.put("group.id",browseTopicGroupID);
-        DataStream<UserBrowseLog> browseStream=streamEnv
+        browseProperties.put("bootstrap.servers", kafkaBootstrapServers);
+        browseProperties.put("group.id", browseTopicGroupID);
+        DataStream<UserBrowseLog> browseStream = streamEnv
                 .addSource(new FlinkKafkaConsumer<>(browseTopic, new SimpleStringSchema(), browseProperties))
                 .process(new BrowseKafkaProcessFunction());
-        tableEnv.registerDataStream("kafka",browseStream,"userID,eventTime,eventTimeTimestamp,eventType,productID,productPrice");
+        tableEnv.registerDataStream("kafka", browseStream, "userID,eventTime,eventTimeTimestamp,eventType,productID,productPrice");
         //tableEnv.toAppendStream(tableEnv.scan("kafka"),Row.class).print();
 
         //4、注册HBase数据源(Lookup Table Source)
         Configuration conf = new Configuration();
         conf.set("hbase.zookeeper.quorum", hbaseZookeeperQuorum);
-        conf.set("zookeeper.znode.parent",hbaseZnode);
-        HBaseTableSource hBaseTableSource = new HBaseTableSource(conf, hbaseTable);
-        hBaseTableSource.setRowKey("uid",String.class);
-        hBaseTableSource.addColumn("f1","name",String.class);
-        hBaseTableSource.addColumn("f1","age",Integer.class);
-        tableEnv.registerTableSource("hbase",hBaseTableSource);
-        //注册TableFunction
-        tableEnv.registerFunction("hbaseLookup", hBaseTableSource.getLookupFunction(new String[]{"uid"}));
+        conf.set("zookeeper.znode.parent", hbaseZnode);
+//        HBaseTableSource hBaseTableSource = new HBaseTableSource(conf, hbaseTable);
+//        hBaseTableSource.setRowKey("uid", String.class);
+//        hBaseTableSource.addColumn("f1", "name", String.class);
+//        hBaseTableSource.addColumn("f1", "age", Integer.class);
+//        tableEnv.registerTableSource("hbase", hBaseTableSource);
+//        //注册TableFunction
+//        tableEnv.registerFunction("hbaseLookup", hBaseTableSource.getLookupFunction(new String[]{"uid"}));
 
         //5、注册Mysql数据源(Lookup Table Source)
-        String[] mysqlFieldNames={"pid","productName","productCategory","updatedAt"};
-        DataType[] mysqlFieldTypes={DataTypes.STRING(),DataTypes.STRING(),DataTypes.STRING(),DataTypes.STRING()};
+        String[] mysqlFieldNames = {"pid", "productName", "productCategory", "updatedAt"};
+        DataType[] mysqlFieldTypes = {DataTypes.STRING(), DataTypes.STRING(), DataTypes.STRING(), DataTypes.STRING()};
         TableSchema mysqlTableSchema = TableSchema.builder().fields(mysqlFieldNames, mysqlFieldTypes).build();
-        JDBCOptions jdbcOptions = JDBCOptions.builder()
-                .setDriverName("com.mysql.jdbc.Driver")
-                .setDBUrl(mysqlDBUrl)
-                .setUsername(mysqlUser)
-                .setPassword(mysqlPwd)
-                .setTableName(mysqlTable)
-                .build();
-
-        JDBCLookupOptions jdbcLookupOptions = JDBCLookupOptions.builder()
-                .setCacheExpireMs(10 * 1000) //缓存有效期
-                .setCacheMaxSize(10) //最大缓存数据条数
-                .setMaxRetryTimes(3) //最大重试次数
-                .build();
-
-        JDBCTableSource jdbcTableSource = JDBCTableSource.builder()
-                .setOptions(jdbcOptions)
-                .setLookupOptions(jdbcLookupOptions)
-                .setSchema(mysqlTableSchema)
-                .build();
-        tableEnv.registerTableSource("mysql",jdbcTableSource);
-        //注册TableFunction
-        tableEnv.registerFunction("mysqlLookup",jdbcTableSource.getLookupFunction(new String[]{"pid"}));
+//        JDBCOptions jdbcOptions = JDBCOptions.builder()
+//                .setDriverName("com.mysql.jdbc.Driver")
+//                .setDBUrl(mysqlDBUrl)
+//                .setUsername(mysqlUser)
+//                .setPassword(mysqlPwd)
+//                .setTableName(mysqlTable)
+//                .build();
+//
+//        JDBCLookupOptions jdbcLookupOptions = JDBCLookupOptions.builder()
+//                .setCacheExpireMs(10 * 1000) //缓存有效期
+//                .setCacheMaxSize(10) //最大缓存数据条数
+//                .setMaxRetryTimes(3) //最大重试次数
+//                .build();
+//
+//        JDBCTableSource jdbcTableSource = JDBCTableSource.builder()
+//                .setOptions(jdbcOptions)
+//                .setLookupOptions(jdbcLookupOptions)
+//                .setSchema(mysqlTableSchema)
+//                .build();
+//        tableEnv.registerTableSource("mysql", jdbcTableSource);
+//        //注册TableFunction
+//        tableEnv.registerFunction("mysqlLookup", jdbcTableSource.getLookupFunction(new String[]{"pid"}));
 
 
         //6、查询
@@ -132,7 +124,7 @@ public class Test2 {
                 + "     LATERAL TABLE(hbaseLookup(userID)), "
                 + "     LATERAL TABLE (mysqlLookup(productID))";
 
-        tableEnv.toAppendStream(tableEnv.sqlQuery(sql),Row.class).print();
+        tableEnv.toAppendStream(tableEnv.sqlQuery(sql), Row.class).print();
 
         //7、开始执行
         tableEnv.execute(Test.class.getSimpleName());
@@ -157,7 +149,7 @@ public class Test2 {
                 log.setEventTime(eventTimeTimestamp);
 
                 out.collect(log);
-            }catch (Exception ex){
+            } catch (Exception ex) {
 //                log.error("解析Kafka数据异常...",ex);
             }
         }

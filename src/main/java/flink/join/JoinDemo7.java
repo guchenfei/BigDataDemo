@@ -11,6 +11,7 @@ import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 import org.apache.flink.table.functions.TemporalTableFunction;
 import org.apache.flink.types.Row;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,6 +78,11 @@ public class JoinDemo7 {
                 .sqlQuery("select u.user_name,u.city_id,d.city_name,u.ts from userTable as u " +
                         ", Lateral table (dimCity(u.ts)) d " +
                         "where u.city_id=d.city_id");
+
+        String explain = tableEnv.explain(result);
+        System.out.println("===================");
+        System.out.println("explain" + explain);
+        System.out.println("===================");
 
         //打印输出
         DataStream resultDs = tableEnv.toAppendStream(result, Row.class);

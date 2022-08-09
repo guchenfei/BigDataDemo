@@ -13,7 +13,6 @@ class FlattenDemo {
 
   def getStageBackend() = ???
 
-  @Test
   def testLateralTVF(): Unit = {
     val environment: StreamExecutionEnvironment = StreamExecutionEnvironment.getExecutionEnvironment
     val settings = EnvironmentSettings.newInstance().useBlinkPlanner().inStreamingMode().build()
@@ -25,12 +24,12 @@ class FlattenDemo {
     userData.+=(("Kevin#36"))
     userData.+=(("Panpan#36"))
 
-    val sqlQuery = "select data,name,age, from userTab,LATERAL(splitTVF(data)) as T(name,age)"
-    val users = environment.fromCollection(userData).toTable(tableEnvironment, $("data"))
-    val tVF = new SplitTVF()
-    tableEnvironment.registerTable("userTab", users)
-    tableEnvironment registerFunction("splitTVF", tVF)
-    val result = tableEnvironment.sqlQuery(sqlQuery).toAppendStream[Row]
+//    val sqlQuery = "select data,name,age, from userTab,LATERAL(splitTVF(data)) as T(name,age)"
+//    val users = environment.fromCollection(userData).toTable(tableEnvironment, $("data"))
+//    val tVF = new SplitTVF()
+//    tableEnvironment.registerTable("userTab", users)
+//    tableEnvironment registerFunction("splitTVF", tVF)
+//    val result = tableEnvironment.sqlQuery(sqlQuery).toAppendStream[Row]
     //    result.addSink(...)
     environment.execute()
   }
