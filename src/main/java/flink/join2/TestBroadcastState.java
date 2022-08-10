@@ -134,10 +134,8 @@ public class TestBroadcastState {
      * Tuple6<String, String, String, Integer,String, Integer>: 返回的数据类型
      */
     static class CustomBroadcastProcessFunction extends BroadcastProcessFunction<Tuple4<String, String, String, Integer>, HashMap<String, Tuple2<String, Integer>>, Tuple6<String, String, String, Integer, String, Integer>> {
-
         /**定义MapStateDescriptor*/
         MapStateDescriptor<Void, Map<String, Tuple2<String,Integer>>> configDescriptor = new MapStateDescriptor<>("config", Types.VOID, Types.MAP(Types.STRING, Types.TUPLE(Types.STRING, Types.INT)));
-
         /**
          * 读取状态，并基于状态，处理事件流中的数据
          * 在这里，从上下文中获取状态，基于获取的状态，对事件流中的数据进行处理
@@ -148,21 +146,17 @@ public class TestBroadcastState {
          */
         @Override
         public void processElement(Tuple4<String, String, String, Integer> value, ReadOnlyContext ctx, Collector<Tuple6<String, String, String, Integer, String, Integer>> out) throws Exception {
-
             //事件流中的用户ID
             String userID = value.f0;
-
             //获取状态
             ReadOnlyBroadcastState<Void, Map<String, Tuple2<String, Integer>>> broadcastState = ctx.getBroadcastState(configDescriptor);
             Map<String, Tuple2<String, Integer>> broadcastStateUserInfo = broadcastState.get(null);
-
             //配置中有此用户，则在该事件中添加用户的userName、userAge字段。
             //配置中没有此用户，则丢弃
             Tuple2<String, Integer> userInfo = broadcastStateUserInfo.get(userID);
             if(userInfo!=null){
                 out.collect(new Tuple6<>(value.f0,value.f1,value.f2,value.f3,userInfo.f0,userInfo.f1));
             }
-
         }
 
         /**
@@ -174,16 +168,12 @@ public class TestBroadcastState {
          */
         @Override
         public void processBroadcastElement(HashMap<String, Tuple2<String, Integer>> value, Context ctx, Collector<Tuple6<String, String, String, Integer, String, Integer>> out) throws Exception {
-
             //获取状态
             BroadcastState<Void, Map<String, Tuple2<String, Integer>>> broadcastState = ctx.getBroadcastState(configDescriptor);
-
             //清空状态
             broadcastState.clear();
-
             //更新状态
             broadcastState.put(null,value);
-
         }
     }
 

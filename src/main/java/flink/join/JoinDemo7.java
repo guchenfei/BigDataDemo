@@ -1,5 +1,6 @@
 package flink.join;
 
+import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.api.java.tuple.Tuple3;
 import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.datastream.DataStream;
@@ -11,7 +12,6 @@ import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 import org.apache.flink.table.functions.TemporalTableFunction;
 import org.apache.flink.types.Row;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,6 +86,8 @@ public class JoinDemo7 {
 
         //打印输出
         DataStream resultDs = tableEnv.toAppendStream(result, Row.class);
+
+        DataStream<Tuple2<Boolean, Row>> tuple2DataStream = tableEnv.toRetractStream(result, Row.class);
         resultDs.print();
         env.execute("joinDemo");
     }

@@ -137,9 +137,7 @@ public class Test2 {
         @Override
         public void processElement(String value, Context ctx, Collector<UserBrowseLog> out) throws Exception {
             try {
-
                 UserBrowseLog log = JSON.parseObject(value, UserBrowseLog.class);
-
                 // 增加一个long类型的时间戳
                 // 指定eventTime为yyyy-MM-dd HH:mm:ss格式的北京时间
                 DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
