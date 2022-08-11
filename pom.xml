@@ -131,6 +131,7 @@
             <artifactId>flink-table</artifactId>
             <version>1.11.1</version>
         </dependency>
+
         <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-table-api-java-bridge -->
         <dependency>
             <groupId>org.apache.flink</groupId>

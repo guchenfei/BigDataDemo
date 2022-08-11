@@ -3,9 +3,10 @@ package flink.table
 import flink.sql.SensorSource
 import org.apache.flink.streaming.api.scala.StreamExecutionEnvironment
 import org.apache.flink.table.api.{EnvironmentSettings, FieldExpression, Table}
-import org.apache.flink.table.api.bridge.scala.{StreamTableEnvironment, tableConversions}
-import org.apache.flink.streaming.api.scala._
 import org.apache.flink.table.api.Expressions.{$, call}
+import org.apache.flink.api.scala._
+import org.apache.flink.table.api._
+import org.apache.flink.table.api.bridge.scala.{StreamTableEnvironment, tableConversions}
 
 object AvgTmpDemo {
   def main(args: Array[String]): Unit = {
@@ -17,10 +18,10 @@ object AvgTmpDemo {
     val avgTemp = new AvgTemp
 
     // Table API的调用
-    val resultTable: Table = sensorTable
+    val resultTable = sensorTable
       .groupBy($"id")
-      .aggregate(avgTemp("temperature"))
-      .select($"id", $"avgTempResult")
+      .aggregate(avgTemp($"temperature") as "avgTemp")
+      .select($"id", $"avgTemp")
 
     // SQL的实现
 //    tableEnv.createTemporaryView("sensor", sensorTable)
