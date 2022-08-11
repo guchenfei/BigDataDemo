@@ -11,7 +11,6 @@ import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 import org.apache.flink.table.functions.TemporalTableFunction;
 import org.apache.flink.types.Row;
-
 import java.util.Properties;
 
 /**

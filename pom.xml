@@ -30,13 +30,13 @@
         <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-streaming-java -->
         <dependency>
             <groupId>org.apache.flink</groupId>
-            <artifactId>flink-streaming-java_2.12</artifactId>
+            <artifactId>flink-streaming-java_2.11</artifactId>
             <version>1.11.1</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-cep -->
         <dependency>
             <groupId>org.apache.flink</groupId>
-            <artifactId>flink-cep_2.12</artifactId>
+            <artifactId>flink-cep_2.11</artifactId>
             <version>1.11.1</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-core -->
@@ -48,13 +48,13 @@
         <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-clients -->
         <dependency>
             <groupId>org.apache.flink</groupId>
-            <artifactId>flink-clients_2.12</artifactId>
+            <artifactId>flink-clients_2.11</artifactId>
             <version>1.11.1</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-runtime -->
         <dependency>
             <groupId>org.apache.flink</groupId>
-            <artifactId>flink-runtime_2.12</artifactId>
+            <artifactId>flink-runtime_2.11</artifactId>
             <version>1.11.1</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-java -->
@@ -134,7 +134,6 @@
         <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-table-api-java-bridge -->
         <dependency>
             <groupId>org.apache.flink</groupId>
-            <artifactId>flink-table-api-java-bridge_2.11</artifactId>
             <artifactId>flink-table-api-java-bridge_2.11</artifactId>
             <version>1.11.1</version>
         </dependency>
