@@ -7,6 +7,20 @@ import org.apache.flink.table.api._
 import org.apache.flink.streaming.api.scala._
 import org.apache.hadoop.thirdparty.protobuf.Timestamp
 
+/**
+ *彻底重置hadoop和hive的方法
+stop-all.sh
+hadoop namenode -format
+# 在mysql中删除hive的元数据库
+start-all.sh
+hadoop fs -mkdir /tmp
+hadoop fs -mkdir -p /user/hive/warehouse
+hadoop fs -chmod g+w /tmp
+hadoop fs -chmod g+w /user/hive/warehouse
+schematool -dbType mysql -initSchema
+hive --service metastore
+hive
+ */
 class TestHiveStreaming2 {
   def main(args: Array[String]): Unit = {
     val env = StreamExecutionEnvironment.getExecutionEnvironment

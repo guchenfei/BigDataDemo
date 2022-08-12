@@ -7,6 +7,17 @@ import org.apache.flink.table.catalog.hive.HiveCatalog
 import org.apache.flink.streaming.api.scala._
 import org.apache.flink.table.api._
 
+/**
+ * 示例程序
+先在hive中新建数据库和表
+
+create database mydb;
+use mydb;
+create table if not exists t_user(id string, name string);
+insert into table t_user values ('1','huangbo'), ('2','xuzheng'),('3','wangbaoqiang');
+然后编写程序，将数据流写入到hive中
+ */
+
 object TestHiveStreaming {
   def main(args: Array[String]): Unit = {
     val env = StreamExecutionEnvironment.getExecutionEnvironment
