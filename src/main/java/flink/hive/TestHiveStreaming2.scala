@@ -8,34 +8,40 @@ import org.apache.flink.streaming.api.scala._
 import org.apache.hadoop.thirdparty.protobuf.Timestamp
 
 /**
- *彻底重置hadoop和hive的方法
-stop-all.sh
-hadoop namenode -format
-# 在mysql中删除hive的元数据库
-start-all.sh
-hadoop fs -mkdir /tmp
-hadoop fs -mkdir -p /user/hive/warehouse
-hadoop fs -chmod g+w /tmp
-hadoop fs -chmod g+w /user/hive/warehouse
-schematool -dbType mysql -initSchema
-hive --service metastore
-hive
+ * 彻底重置hadoop和hive的方法
+ * stop-all.sh
+ * hadoop namenode -format
+ * # 在mysql中删除hive的元数据库
+ * start-all.sh
+ * hadoop fs -mkdir /tmp
+ * hadoop fs -mkdir -p /user/hive/warehouse
+ * hadoop fs -chmod g+w /tmp
+ * hadoop fs -chmod g+w /user/hive/warehouse
+ * schematool -dbType mysql -initSchema
+ * hive --service metastore
+ * hive
  */
 class TestHiveStreaming2 {
   def main(args: Array[String]): Unit = {
     val env = StreamExecutionEnvironment.getExecutionEnvironment
     val tableEnv = StreamTableEnvironment.create(env)
 
+    //    val stream = env.fromElements(
+    //      ("1", 1000, new Timestamp(1000L)),
+    //      ("2", 2000, new Timestamp(2000L)),
+    //      ("3", 3000, new Timestamp(3000L))
+    //    )
+
     val stream = env.fromElements(
-      ("1", 1000, new Timestamp(1000L)),
-      ("2", 2000, new Timestamp(2000L)),
-      ("3", 3000, new Timestamp(3000L))
+      ("1", 1000, 1000L),
+      ("2", 2000, 2000L),
+      ("3", 3000, 3000L)
     )
 
-    val name            = "myhive"
+    val name = "myhive"
     val defaultDatabase = "mydb"
-    val hiveConfDir     = "/Users/Downloads/apache-hive-3.1.2-bin/conf" // a local path
-    val version         = "3.1.2"
+    val hiveConfDir = "/Users/Downloads/apache-hive-3.1.2-bin/conf" // a local path
+    val version = "3.1.2"
 
     val hive = new HiveCatalog(name, defaultDatabase, hiveConfDir, version)
     tableEnv.registerCatalog(name, hive)
@@ -63,7 +69,7 @@ class TestHiveStreaming2 {
 
     val insertSql = "insert into fs_table SELECT userId, amount, " +
       " DATE_FORMAT(ts, 'yyyy-MM-dd'), DATE_FORMAT(ts, 'HH'), DATE_FORMAT(ts, 'mm') FROM users"
-    tableEnv.executeSql(insertSql)//这个是流式数据不断query insert
+    tableEnv.executeSql(insertSql) //这个是流式数据不断query insert
 
     env.execute()
   }
