@@ -7,7 +7,7 @@ import org.apache.flink.table.api._
 import org.apache.flink.streaming.api.scala._
 import org.apache.hadoop.thirdparty.protobuf.Timestamp
 
-/**
+   /**
  * 彻底重置hadoop和hive的方法
  * stop-all.sh
  * hadoop namenode -format
