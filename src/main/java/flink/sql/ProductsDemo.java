@@ -9,7 +9,7 @@ import org.apache.flink.table.api.TableEnvironment;
  * max_result：最高价）
  */
 public class ProductsDemo {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         EnvironmentSettings settings = EnvironmentSettings
                 .newInstance()
                 .inStreamingMode() // 声明为流任务
@@ -61,5 +61,7 @@ public class ProductsDemo {
         tEnv.executeSql(sourceSql);
         tEnv.executeSql(sinkSql);
         tEnv.executeSql(selectWhereSql);
+
+        tEnv.execute("");
     }
 }
