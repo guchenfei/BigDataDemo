@@ -3,14 +3,15 @@ package flink.sql;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.EnvironmentSettings;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
+import org.apache.flink.types.Row;
 
 public class SqlIntervalUseDemo {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         EnvironmentSettings settings = EnvironmentSettings.newInstance().inStreamingMode().useBlinkPlanner().build();
         StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
         StreamTableEnvironment tableEnv = StreamTableEnvironment.create(streamEnv, settings);
 
-        String sql = "CREATE TABLE sink_table (\n" +
+        String intervalUseSQL = "CREATE TABLE sink_table (\n" +
                 "    result_interval_year TIMESTAMP(3),\n" +
                 "    result_interval_year_p TIMESTAMP(3),\n" +
                 "    result_interval_year_p_to_month TIMESTAMP(3),\n" +
@@ -70,5 +71,14 @@ public class SqlIntervalUseDemo {
                 "    -- INTERVAL SECOND(p2)\n" +
                 "    , f1 + INTERVAL '300' SECOND(3) as result_interval_second_p2\n" +
                 "FROM (SELECT TO_TIMESTAMP_LTZ(1640966476500, 3) as f1)";
+
+        String sql1 = "SELECT TO_TIMESTAMP(FROM_UNIXTIME(1660554285420 / 1000, 'yyyy-MM-dd HH:mm:ss')) + INTERVAL '300' SECOND(3) as result_interval_second_p2";
+        tableEnv.toAppendStream(tableEnv.sqlQuery(sql1), Row.class).print();
+        //我专门做了验证验证下 + INTERVAL '300' SECOND(3)效果
+        //+ INTERVAL '400' SECOND(3)
+        //timeStamp只是一种类型
+        //6> 2022-08-15T17:09:45
+        //3> 2022-08-15T17:11:25
+        streamEnv.execute();
     }
 }
