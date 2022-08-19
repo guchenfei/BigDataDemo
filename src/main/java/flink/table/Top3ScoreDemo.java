@@ -37,7 +37,7 @@ public class Top3ScoreDemo {
        TypeInformation[] fieldTypes = {Types.STRING, Types.BIG_INT};
         TableSink<Row> configure = new CsvTableSink("/Users/guchenfei/IdeaProjects/BigDataDemo/src/main/data/result", ",")
                 .configure(fieldNames, fieldTypes);
-        tableEnvironment.registerTableSink("result",configure);
+//        tableEnvironment.registerTableSink("result",configure);--版本问题先注释
         tableEnvironment.sqlQuery("select * from table1").executeInsert("result");
         env.execute();
     }
