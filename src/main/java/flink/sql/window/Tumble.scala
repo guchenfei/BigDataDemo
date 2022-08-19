@@ -54,7 +54,6 @@ object Tumble {
 
     val sql4 = "CREATE TABLE source_table (\n" +
       "dim STRING,\n" +
-      "-- 用户 id\n " +
       "user_id BIGINT,\n" +
       "price BIGINT,\n" +
       "row_time AS cast(CURRENT_TIMESTAMP as timestamp(3)),\n   " +
@@ -82,13 +81,13 @@ object Tumble {
     val sql6 = "insert into sink_table\n   " +
       "SELECT \n" +
       "dim,\n" +
-      "UNIX_TIMESTAMP(CAST(window_start AS STRING)) * 1000 as window_start,\n    " +
       "count(*) as pv,\n     " +
       "sum(price) as sum_price,\n    " +
       "max(price) as max_price,\n     " +
       "min(price) as min_price,\n     " +
-      "count(distinct user_id) as uv\n     " +
-      "FROM TABLE(" +
+      "count(distinct user_id) as uv,\n     " +
+      "UNIX_TIMESTAMP(CAST(window_start AS STRING)) * 1000 as window_start\n" +
+    "FROM TABLE(" +
       "TUMBLE(TABLE source_table,DESCRIPTOR(row_time),INTERVAL '60' SECOND))\n" +
       "GROUP BY window_start,window_end,dim"
 

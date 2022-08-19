@@ -31,37 +31,37 @@
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-streaming-java_2.11</artifactId>
-            <version>1.11.1</version>
+            <version>1.13.6</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-cep -->
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-cep_2.11</artifactId>
-            <version>1.11.1</version>
+            <version>1.13.6</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-core -->
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-core</artifactId>
-            <version>1.11.1</version>
+            <version>1.13.6</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-clients -->
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-clients_2.11</artifactId>
-            <version>1.11.1</version>
+            <version>1.13.6</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-runtime -->
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-runtime_2.11</artifactId>
-            <version>1.11.1</version>
+            <version>1.13.6</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-java -->
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-java</artifactId>
-            <version>1.11.1</version>
+            <version>1.13.6</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.bahir/bahir-common -->
         <dependency>
@@ -85,7 +85,7 @@
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-table-planner-blink_2.11</artifactId>
-            <version>1.13.1</version>
+            <version>1.13.6</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.calcite/calcite-core -->
         <dependency>
@@ -109,8 +109,8 @@
         <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-connector-kafka -->
         <dependency>
             <groupId>org.apache.flink</groupId>
-            <artifactId>flink-connector-kafka_2.12</artifactId>
-            <version>1.11.1</version>
+            <artifactId>flink-connector-kafka_2.11</artifactId>
+            <version>1.13.6</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-table-planner -->
 <!--        <dependency>-->
@@ -123,35 +123,29 @@
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-table-runtime-blink_2.11</artifactId>
-            <version>1.13.1</version>
+            <version>1.13.6</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-table -->
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-table</artifactId>
-            <version>1.13.1</version>
+            <version>1.13.6</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-table-api-java-bridge -->
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-table-api-java-bridge_2.11</artifactId>
-            <version>1.13.1</version>
+            <version>1.13.6</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-table-api-scala-bridge -->
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-table-api-scala-bridge_2.11</artifactId>
-            <version>1.13.1</version>
+            <version>1.13.6</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-connector-kafka -->
-        <dependency>
-            <groupId>org.apache.flink</groupId>
-            <artifactId>flink-connector-kafka_2.12</artifactId>
-            <version>1.11.1</version>
-        </dependency>
         <dependency>
             <groupId>org.elasticsearch.client</groupId>
             <artifactId>elasticsearch-rest-high-level-client</artifactId>
@@ -221,7 +215,7 @@
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-connector-hive_2.11</artifactId>
-            <version>1.11.1</version>
+            <version>1.13.6</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.apache.hive/hive-exec -->
@@ -255,7 +249,7 @@
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-csv</artifactId>
-            <version>1.11.1</version>
+            <version>1.13.6</version>
         </dependency>
     </dependencies>
 
