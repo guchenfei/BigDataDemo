@@ -61,6 +61,22 @@ object GroupingSets {
      * )
      */
 
+    val sql4 = "SELECT \n    " +
+      "supplier_id\n," +
+      "rating\n," +
+      "product_id\n, " +
+      "COUNT(*)\n" +
+      "FROM (VALUES('supplier1', 'product1', 4),('supplier1', 'product2', 3),('supplier2', 'product3', 3),('supplier2', 'product4', 4))\n" +
+      "AS Products(supplier_id, product_id, rating)\n" +
+      "GROUP BY GROUPING SETS((supplier_id, product_id, rating ),\n   " +
+      "(supplier_id, product_id),\n" +
+      "(supplier_id,rating),\n" +
+      "(supplier_id),\n" +
+      "(product_id,rating),\n" +
+      "(product_id),\n" +
+      "(rating),\n" +
+      "())"
+
     tableEnv.executeSql(sql)
     tableEnv.executeSql(sql2)
     tableEnv.executeSql(sql3)
