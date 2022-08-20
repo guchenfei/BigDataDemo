@@ -61,6 +61,9 @@ object GroupingSets {
      * )
      */
 
+    /**
+     * 如果我们单单使用group聚合也可以使用GROUPING SETS语法样例如下
+     */
     val sql4 = "SELECT \n    " +
       "supplier_id\n," +
       "rating\n," +
