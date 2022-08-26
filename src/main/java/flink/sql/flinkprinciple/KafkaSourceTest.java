@@ -36,5 +36,6 @@ public class KafkaSourceTest {
         Table t = tEnv.sqlQuery("SELECT * FROM KafkaSourceTable");
         tEnv.toAppendStream(t, Row.class).print();
         env.execute();
+
     }
 }
