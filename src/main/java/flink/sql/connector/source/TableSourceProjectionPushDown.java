@@ -48,6 +48,6 @@ public class TableSourceProjectionPushDown implements ScanTableSource, SupportsP
 
     @Override
     public void applyProjection(int[][] projectedFields) {
-        this.tableSchema = projectSchemaWithMetadata(this.tableSchema,projectedFields);
+//        this.tableSchema = projectSchemaWithMetadata(this.tableSchema,projectedFields);
     }
 }
