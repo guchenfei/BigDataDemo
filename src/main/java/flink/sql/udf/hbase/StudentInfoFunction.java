@@ -191,7 +191,6 @@ public class StudentInfoFunction extends ScalarFunction {
                 String column = Bytes.toString(CellUtil.cloneQualifier(cell));
                 String value = Bytes.toString(CellUtil.cloneValue(cell));
                 //System.out.println("score info :family : " + family + " , column : " + column + " value : " + value);
-                //   STRING, STRING, STRING>")
                 switch (column) {
                     case "Chinese":
                         row.setField(8, value);
