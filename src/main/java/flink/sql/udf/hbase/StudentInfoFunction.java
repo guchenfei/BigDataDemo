@@ -124,6 +124,7 @@ public class StudentInfoFunction extends ScalarFunction {
 
             //先查第一张表
             Get getStudent = new Get(rowKey.getBytes(StandardCharsets.UTF_8));
+            //这个功能api有待进一步研究
 //        getStudent.addColumn(FAMILY_STUDENT_BASIC_INFO.getBytes(), "name".getBytes());
 //        getStudent.addColumn(FAMILY_STUDENT_BASIC_INFO.getBytes(), "age".getBytes());
 //        getStudent.addColumn(FAMILY_STUDENT_BASIC_INFO.getBytes(), "height".getBytes());
